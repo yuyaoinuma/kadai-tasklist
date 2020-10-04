@@ -1,6 +1,6 @@
-<h1>id: <%= @tasklist.id %> 編集ページ</h1>
+<h1>id: <%= @task.id %> 編集ページ</h1>
 
-<%= form_with(model: @tasklist, local: true) do |f| %>
+<%= form_with(model: @task, local: true) do |f| %>
   <%= f.label :content, 'メッセージ' %>
   <%= f.text_field :content %>
 
