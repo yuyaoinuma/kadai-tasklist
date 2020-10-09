@@ -1,28 +1,33 @@
 <% if logged_in? %>
   <h1>タスク一覧</h1>
   <p>ユーザ: <%= current_user.name %></p>
-   <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>タスク</th>
-        <th>ステータス</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @tasks.each do |tasklist| %>
-        <tr>
-          <td><%= link_to tasklist.id, tasklist %></td> : <td><%= tasklist.content %></td> &gt; <td><%= tasklist.status %></td></li>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <%= link_to '新規の作成', new_task_path, class: "btn btn-primary" %>
+  
+  <div class="row">
+  <aside class="col-sm-4">
+    <%= form_with(model: @task, local: true) do |f| %>
+      <div class="form-group">
+        <%= f.label :content, 'タスク' %>
+        <%= f.text_field :content, class: 'form-control' %>
+      </div>
+      
+      <div class="form-group">
+        <%= f.label :status, 'ステータス' %>
+        <%= f.text_field :status, class: 'form-control' %>
+      </div>
+      
+      <%= f.submit '作成', class: 'btn btn-primary' %>
+      
+    <% end %>
+  </aside>
+    <div class="col-sm-8">
+      <%= render 'tasks/tasks', tasks: @tasks %>
+    </div>
+  </div>
 <% else %>
   <div class="center jumbotron">
     <div class="text-center">
       <h1>TaskList</h1>
-      <%= link_to '新規登録', signup_path, class: 'btn btn-lg btn-primary' %>
+      <%= link_to '新規登録', new_user_path, class: 'btn btn-lg btn-primary' %>
       <%= link_to 'ログイン', login_path, class: 'btn btn-lg btn-primary' %>
     </div>
   </div>
@@ -30,9 +35,6 @@
 
 
 
-
-<% if @tasks.any? %>
-<% end %>
 
 
 

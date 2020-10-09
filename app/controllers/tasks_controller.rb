@@ -1,7 +1,10 @@
 class TasksController < ApplicationController
   
   def index
-    @tasks =  Task.all
+    if logged_in?
+      @task = current_user.tasks.build  # form_with 用
+      @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
+    end
   end
 
   def show
@@ -13,12 +16,12 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(tasklist_params)
-
+    @task = current_user.tasks.build(tasklist_params)
     if @task.save
       flash[:success] = 'タスク が正常に追加されました'
       redirect_to @task
     else
+      @task = current_user.tasks.order(id: :desc).take(params[:page])
       flash.now[:danger] = 'タスク が作成されませんでした'
       render :new
     end
@@ -47,6 +50,7 @@ class TasksController < ApplicationController
 
     flash[:success] = 'タスク は正常に削除されました'
     redirect_to tasks_url
+  
   end
   
   

@@ -1,12 +1,6 @@
 Rails.application.routes.draw do
-
- 
-  get 'sessions/new'
-  get 'sessions/create'
-  get 'sessions/destroy'
-  get 'toppages/index'
-  get 'users/create'
-  root to: 'toppages#index'
+  
+  root to: 'tasks#index'
   
   resources :tasks
   
@@ -15,10 +9,9 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
   
  
-  get 'signup', to: 'tasks#index'
-  resources :users, only: [:index, :show, :new, :create]
-  resources :tasks, only: [:create, :destroy]
-  root to: 'tasks#index'
+  get 'new_user_path', to: "tasks#index"
+  resources :users, only: [:new, :create]
  
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.htm
+  
 end
+
