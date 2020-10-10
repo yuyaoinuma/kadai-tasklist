@@ -3,9 +3,8 @@ class TasksController < ApplicationController
   
   def index
     if logged_in?
-      @tasks = Task.all
+      @tasks = Task.all.order(id: :desc).page(params[:page]).per(10)
       @task = current_user.tasks.build  
-      @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
     else
       flash[:alert] = "ログインしてください"
       redirect_to login_path
