@@ -1,15 +1,8 @@
 class TasksController < ApplicationController
-  before_action :correct_user, only: [:show, :edit,:destroy]
+  before_action :correct_user, only: [:edit,:destroy]
   
   def index
-    if logged_in?
-      @task = current_user.tasks.build  
-      @tasks = current_user.tasks.order(id: :desc)
-      @tasks = Task.all.page(params[:page]).per(10)
-    else
-      flash[:alert] = "ログインしてください"
-      redirect_to login_path
-    end
+    @tasks = Task.all.order(id: :desc).page(params[:page]).per(10)
   end
 
   def show
@@ -26,7 +19,6 @@ class TasksController < ApplicationController
       flash[:success] = 'タスク が正常に追加されました'
       redirect_to @task
     else
-      @task = current_user.tasks.order(id: :desc).take(params[:page])
       flash.now[:danger] = 'タスク が作成されませんでした'
       render :new
     end
