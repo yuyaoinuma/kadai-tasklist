@@ -1,10 +1,17 @@
 class TasksController < ApplicationController
-  before_action :correct_user, only: [:edit,:destroy]
+  before_action :correct_user, only: [:show, :edit,:destroy]
   
   def index
-    @tasks = Task.all.order(id: :desc).page(params[:page]).per(10)
+    if logged_in?
+      @tasks = Task.all
+      @task = current_user.tasks.build  
+      @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
+    else
+      flash[:alert] = "ログインしてください"
+      redirect_to login_path
+    end
   end
-
+    
   def show
     @task = Task.find(params[:id])
   end
