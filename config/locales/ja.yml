@@ -9,6 +9,17 @@ ja:
         password: パスワード
         password_confirmation: 確認用パスワード
         
+  activerecord:
+    models:
+      task: タスク
+    attributes:
+      task:
+        content: タスク
+        status: ステータス
+  
+  
+        
+        
     views:
       pagination:
         first: "&laquo; 最初"

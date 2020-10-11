@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   
   def index
     if logged_in?
-      @tasks = Task.all.order(id: :desc).page(params[:page]).per(10)
+      @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
       @task = current_user.tasks.build  
     else
       flash[:alert] = "ログインしてください"
