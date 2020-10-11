@@ -1,18 +1,12 @@
 class TasksController < ApplicationController
-  before_action :correct_user, only: [:show, :edit,:destroy]
+  before_action :require_user_logged_in
+  before_action :correct_user, only: [:show, :edit, :update,:destroy]
   
   def index
-    if logged_in?
       @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
-      @task = current_user.tasks.build  
-    else
-      flash[:alert] = "ログインしてください"
-      redirect_to login_path
-    end
   end
     
   def show
-    @task = Task.find(params[:id])
   end
 
   def new
@@ -31,15 +25,12 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id])
   end
 
   def update
-    @task = Task.find(params[:id])
-
     if @task.update(tasklist_params)
       flash[:success] = 'タスク は正常に更新されました'
-      redirect_to @task
+      redirect_to task_path
     else
       flash.now[:danger] = 'タスク は更新されませんでした'
       render :edit
@@ -48,7 +39,6 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = Task.find(params[:id])
     @task.destroy
 
     flash[:success] = 'タスク は正常に削除されました'
